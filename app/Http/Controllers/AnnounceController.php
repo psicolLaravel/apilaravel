@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Announce;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
+use Validator;
 
-class AnnounceController extends Controller
+class AnnounceController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,14 @@ class AnnounceController extends Controller
      */
     public function index()
     {
-        //
+        $announce = Announce::all();
+
+        try {
+            return $this->sendResponse($announce->toArray(), 'Anuncios recuperados satisfactoriamente!');
+        } catch (\Throwable $th) {
+            return $this->sendError($th, 'Falla al recuperar la data');
+        }
+        
     }
 
     /**
@@ -35,7 +44,17 @@ class AnnounceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $curl = curl_init();
+        // // Set some options - we are passing in a useragent too here
+        // curl_setopt_array($curl, [
+        //     CURLOPT_RETURNTRANSFER => 1,
+        //     CURLOPT_URL => 'http://testcURL.com/?item1=value&item2=value2',
+        //     CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        // ]);
+        // // Send the request & save response to $resp
+        // $resp = curl_exec($curl);
+        // // Close request to clear up some resources
+        // curl_close($curl);
     }
 
     /**
