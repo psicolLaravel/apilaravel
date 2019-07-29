@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Announce;
+use App\Report;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
-use Validator;
 
-class AnnounceController extends ApiController
+class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +14,7 @@ class AnnounceController extends ApiController
      */
     public function index()
     {
-        $announce = Announce::all();
-
-        try {
-            return $this->sendResponse($announce->toArray(), 'Anuncios recuperados satisfactoriamente!');
-        } catch (\Throwable $th) {
-            return $this->sendError($th, 'Falla al recuperar la data');
-        }
-        
+        //
     }
 
     /**
@@ -44,6 +35,17 @@ class AnnounceController extends ApiController
      */
     public function store(Request $request)
     {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Report  $report
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Report $report)
+    {
         // $curl = curl_init();
         // // Set some options - we are passing in a useragent too here
         // curl_setopt_array($curl, [
@@ -56,58 +58,30 @@ class AnnounceController extends ApiController
         // // Close request to clear up some resources
         // curl_close($curl);
         //$status_resp = http_response_code();
-
-        $resp = '{"success":true,"data":{"id":1,"name":"carro","description":"carro con 8 puertas, melo","cant":1,"valor":100},"message":"Productos recuperados satisfactoriamente"}';
-        
+        $resp = '{"success":true,"data":{"id":1,"status":"1","sold_date":"2019-05-03"},"message":"Productos recuperados satisfactoriamente"}';        
         $response = json_decode($resp);
-
-        // dd((array)$response->data);
-
         if ($response->success) {
-
             $validator = Validator::make((array)$response->data, [
-                'id' => 'required|integer'
+                'id' => 'required|integer',
+                'status' => 'required|integer|min:0|max:1'
             ]);
 
             if ($validator->fails()) {
                 return $this->sendError('Error de validación', $validator->error());
             }
 
-            //Validar el request
-            $input = $request->all();            
-            $input['product_id'] = $response->data->id;
-
-            $validator = Validator::make($input, [
-                'description' => 'required|string',
-                'product_id'  => 'required|integer',
-                'status'      => 'required|integer|min:0|max:1'
-            ]);
-
-            $announce = Announce::create($input);
-
-            return $this->sendResponse($announce->toArray(), 'Anuncio creado satisfactoriamente!');
+            return $this->sendResponse($response->data->toArray(), 'reporte de ventas');
         }
         
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Announce  $announce
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Announce $announce)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Announce  $announce
+     * @param  \App\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function edit(Announce $announce)
+    public function edit(Report $report)
     {
         //
     }
@@ -116,10 +90,10 @@ class AnnounceController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Announce  $announce
+     * @param  \App\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Announce $announce)
+    public function update(Request $request, Report $report)
     {
         //
     }
@@ -127,10 +101,10 @@ class AnnounceController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Announce  $announce
+     * @param  \App\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Announce $announce)
+    public function destroy(Report $report)
     {
         //
     }
