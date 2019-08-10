@@ -21,3 +21,6 @@ Route::group(['middleware' => 'auth:api'], function()
 });
 
 Route::resource('announces', 'AnnounceController');
+
+Route::resource('products', 'ProductController');
+Route::resource('sales', 'VentaController');

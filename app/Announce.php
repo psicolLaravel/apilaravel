@@ -12,4 +12,11 @@ class Announce extends Model
         'status',
         'sold_date',
     ];
+
+    protected $primaryKey = 'id';
+
+    public function products()
+    {
+        return $this->belongsToMany('App\Products');
+    }
 }
