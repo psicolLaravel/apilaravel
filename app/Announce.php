@@ -13,10 +13,8 @@ class Announce extends Model
         'sold_date',
     ];
 
-    protected $primaryKey = 'id';
-
     public function products()
     {
-        return $this->belongsToMany('App\Products');
+        return $this->belongsToMany('App\Product');
     }
 }
